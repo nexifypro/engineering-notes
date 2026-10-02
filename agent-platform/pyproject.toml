@@ -1,0 +1,21 @@
+[project]
+name = "agent-platform-example"
+version = "0.1.0"
+description = "Reference implementation for 'Stop stuffing the prompt': MCP tool servers owned by domain teams, a shared kit, and an orchestrator loop."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["mcp>=2.0,<3", "anthropic>=1.0", "pydantic>=2.7"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "anyio>=4"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["agentkit", "servers", "orchestrator"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
