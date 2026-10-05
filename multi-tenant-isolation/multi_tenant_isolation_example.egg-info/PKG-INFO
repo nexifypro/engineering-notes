@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: multi-tenant-isolation-example
+Version: 0.1.0
+Summary: Shared-schema multi-tenancy with PostgreSQL row-level security and a cross-tenant leak test.
+Requires-Python: >=3.12
+Requires-Dist: fastapi>=0.115
+Requires-Dist: sqlalchemy>=2.0
+Requires-Dist: psycopg[binary]>=3.2
+Requires-Dist: httpx>=0.27
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"

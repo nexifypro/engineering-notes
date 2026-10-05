@@ -1,0 +1,11 @@
+gate,threshold,evidence,owner,month_1,month_2,month_3,month_4,month_5,month_6
+Bus factor,"Two client engineers shipped to every critical system in the last 90 days","Commit and deploy history by person",Client engineering lead,,,,,,
+Deploy without the vendor,"Client team ran a production deploy and rollback with no vendor present","Deployment log with names",Client engineering lead,,,,,,
+On-call,"Client staffs the rota; vendor is escalation only, declining monthly","Rota, pager assignments, escalation count",Client ops lead,,,,,,
+Runbooks,"Every alert that paged last quarter has a runbook a client engineer has used","Alert list cross-referenced with runbooks",Client ops lead,,,,,,
+Incident ownership,"Last two incidents led and written up by client engineers","Postmortems with authors",Client engineering lead,,,,,,
+Hiring pipeline,"Open roles owned, posted and interviewed by the client","Postings, interview panels",Client HR + engineering lead,,,,,,
+Access,"Vendor holds no standing admin anywhere; break-glass time-boxed and logged","Access review export",Client security owner,,,,,,
+Knowledge,"Architecture, system map, data flows, contracts in client wiki and reviewed","Review sign-offs",Client engineering lead,,,,,,
+Budget,"Cloud and SaaS billed to client accounts and reviewed monthly","Billing ownership, review notes",Client finance + engineering lead,,,,,,
+Velocity without the vendor,"Delivery metrics within agreed bands during a two-week observer window","Metrics for the trial window",Both,,,,,,

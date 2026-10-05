@@ -1,0 +1,23 @@
+# Infrastructure changes are the audit trail: every pull request runs Checkov and a human review.
+# Each skipped check below is a deliberate, documented decision, which is exactly what an auditor
+# wants to see instead of a silent exclusion.
+framework: [terraform]
+directory: [modules, examples]
+compact: true
+quiet: true
+skip-check:
+  # KMS key policy: the account-root "kms:*" statement is the AWS-documented default that keeps the
+  # key administrable; without it the key can become unmanageable. Access is governed by IAM.
+  - CKV_AWS_109
+  - CKV_AWS_111
+  - CKV_AWS_356
+  # Audit bucket: access logging to itself would loop; data events are available via CloudTrail.
+  - CKV_AWS_18
+  # Cross-region replication of audit data is an organisation-level decision, not part of the baseline.
+  - CKV_AWS_144
+  # S3 event notifications and a CloudTrail SNS topic are alerting plumbing; the baseline leaves
+  # alert routing to the organisation's incident tooling.
+  - CKV2_AWS_62
+  - CKV_AWS_252
+  # GuardDuty organisation-wide enablement is configured from the delegated admin account, not here.
+  - CKV2_AWS_3

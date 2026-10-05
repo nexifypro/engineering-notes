@@ -5,3 +5,14 @@ __pycache__/
 .DS_Store
 .env
 node_modules/
+
+# terraform working files (lock files are kept)
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+
+# evidence exports and local reports
+**/evidence/
+**/reports/

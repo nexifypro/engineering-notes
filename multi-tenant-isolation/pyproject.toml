@@ -1,0 +1,20 @@
+[project]
+name = "multi-tenant-isolation-example"
+version = "0.1.0"
+description = "Shared-schema multi-tenancy with PostgreSQL row-level security and a cross-tenant leak test."
+requires-python = ">=3.12"
+dependencies = ["fastapi>=0.115", "sqlalchemy>=2.0", "psycopg[binary]>=3.2", "httpx>=0.27"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
