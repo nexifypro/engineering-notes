@@ -16,9 +16,9 @@ the [NexifyPro blog](https://nexifypro.com/blog/soc2-hipaa-controls-with-terrafo
 - `.checkov.yaml` policy-as-code for the infrastructure repository itself.
 
 ```bash
+pip install checkov && checkov --config-file .checkov.yaml   # from this folder
 cd examples/single-account
 terraform init && terraform plan        # validated with plan; apply enables billable services
-pip install checkov && checkov --config-file ../../.checkov.yaml
 ../../scripts/export-evidence.sh         # read-only, needs an AWS profile
 ```
 

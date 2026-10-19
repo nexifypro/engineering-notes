@@ -1,0 +1,22 @@
+name: ai-assisted-delivery
+
+on:
+  push:
+    paths: ["ai-assisted-delivery/**", ".github/workflows/ai-assisted-delivery.yml"]
+  pull_request:
+    paths: ["ai-assisted-delivery/**"]
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-assisted-delivery
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m py_compile pr-metrics.py
+      - run: python pr-metrics.py --help

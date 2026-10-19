@@ -1,0 +1,39 @@
+name: fargate-vs-eks
+
+on:
+  push:
+    paths: ["fargate-vs-eks/**", ".github/workflows/fargate-vs-eks.yml"]
+  pull_request:
+    paths: ["fargate-vs-eks/**"]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fargate-vs-eks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.15.8"
+          terraform_wrapper: false
+      - run: terraform fmt -check -recursive terraform
+      - name: terraform validate (shared, ecs-fargate, eks-auto)
+        run: |
+          for stack in shared ecs-fargate eks-auto; do
+            echo "== $stack"
+            (cd "terraform/$stack" && terraform init -backend=false -input=false >/dev/null && terraform validate)
+          done
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node --check app/server.js
+      - run: node --input-type=module --check < bench/ramp.js
+      - run: shellcheck scripts/measure.sh
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: python -c "import yaml; docs = list(yaml.safe_load_all(open('terraform/k8s/app.yaml'))); print(len(docs), 'manifests parsed')"

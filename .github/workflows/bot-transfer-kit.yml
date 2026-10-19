@@ -1,0 +1,29 @@
+name: bot-transfer-kit
+
+on:
+  push:
+    paths: ["bot-transfer-kit/**", ".github/workflows/bot-transfer-kit.yml"]
+  pull_request:
+    paths: ["bot-transfer-kit/**"]
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bot-transfer-kit
+    steps:
+      - uses: actions/checkout@v4
+      - name: scorecard CSV is well formed
+        run: |
+          python3 - <<'PY'
+          import csv
+          rows = list(csv.reader(open("readiness-scorecard.csv", newline="")))
+          assert rows, "empty file"
+          width = len(rows[0])
+          assert all(h.strip() for h in rows[0]), "blank header cell"
+          bad = [i + 1 for i, r in enumerate(rows) if len(r) != width]
+          assert not bad, f"rows with a different column count: {bad}"
+          print(f"{len(rows) - 1} gates, {width} columns")
+          PY

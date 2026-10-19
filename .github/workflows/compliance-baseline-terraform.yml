@@ -1,0 +1,31 @@
+name: compliance-baseline-terraform
+
+on:
+  push:
+    paths: ["compliance-baseline-terraform/**", ".github/workflows/compliance-baseline-terraform.yml"]
+  pull_request:
+    paths: ["compliance-baseline-terraform/**"]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: compliance-baseline-terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.15.8"
+          terraform_wrapper: false
+      - run: terraform fmt -check -recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install checkov
+      - run: checkov --config-file .checkov.yaml
+      - run: terraform init -backend=false -input=false
+        working-directory: compliance-baseline-terraform/examples/single-account
+      - run: terraform validate
+        working-directory: compliance-baseline-terraform/examples/single-account

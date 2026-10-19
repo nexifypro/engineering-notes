@@ -1,0 +1,35 @@
+name: multi-tenant-isolation
+
+on:
+  push:
+    paths: ["multi-tenant-isolation/**", ".github/workflows/multi-tenant-isolation.yml"]
+  pull_request:
+    paths: ["multi-tenant-isolation/**"]
+  workflow_dispatch:
+
+jobs:
+  leak-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: multi-tenant-isolation
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: tenants
+        ports: ["5499:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: command -v psql >/dev/null || (sudo apt-get update && sudo apt-get install -y postgresql-client)
+      - run: pip install -e ".[dev]"
+      - run: pytest -q
